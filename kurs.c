@@ -2,22 +2,32 @@
 #include <stdlib.h>
 #include <string.h>
 
+int begin(char run[4]) {
+    while (strcmp(run, "run") != 0) {
+    printf("Keyboard Ninja. Напишите \"run\" для начала игры.\nЧтобы закончить напишите \"end\"\n");
+    scanf("%s", run);
+    }
+    return 0;
+} 
+
 void print(correct, uncorrect) {
     printf("Correct words: %d\nUncorrect words: %d\n", correct, uncorrect);
     exit(0);
 }
 
 int main() {
-    struct food {
+    typedef struct {
 	char name[20];
-    };
-    struct food worrd[10];
+    }type;
+    char run[4];
+    type worrd[10];
     char i=0;
     char word[20];
     char end[10] = "end";
     int uncorrect = 0;
     int correct = 0;
   FILE *f = fopen("words.txt", "r");
+    if (begin(run)==0) {
     while (fscanf(f, "%s", worrd[i].name) != EOF) {
       printf("\"%s\"\n", worrd[i].name);
 	printf("Write this word " );
@@ -35,5 +45,7 @@ int main() {
 	}
 	i++;
 	     }
+	print(correct, uncorrect);
+	}
   return 0;
 }
