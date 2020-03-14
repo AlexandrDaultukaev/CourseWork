@@ -39,11 +39,7 @@ void print(int correct, int uncorrect, double time)
 
 int main()
 {
-    typedef struct {
-        char name[20];
-    } type;
     char run[4]; // Переменная для проверки начала работы программы
-    type worrd[10];
     int i = 0;
     char source[30];
     char word[20];
@@ -52,28 +48,28 @@ int main()
     int correct = 0;
     double time_1, time_2;
     FILE* f = fopen("input.txt", "r");
-    if (begin(run)
-        == 0) { // Если пользователь написал run, перейдёт к циклу while(ниже)
+    // Если пользователь написал run, перейдёт к циклу while(ниже)
+    if (begin(run) == 0) {
         time_1 = wtime();
-        while (fscanf(f, "%s", worrd[i].name) != EOF) { // Пока не конец файла
-            r = getrand(1, 60);                         //<-
-            fseek(f, 0, SEEK_SET);                      //<-
-            int ii = 0;                                 // <-
-            while (ii != r)                             // <-
+        while (1) {                // Пока не конец файла
+            r = getrand(1, 60);    //<-
+            fseek(f, 0, SEEK_SET); //<-
+            int ii = 0;            // <-
+            while (ii != r)        // <-
             { // <-   Функция выбора рандомного слова из списка
-                if (fgets(source, 30, f) != NULL) // <-
-                {                                 // <-
-                    ii++;                         //  <-
-                }                                 //   <-
+                if (fscanf(f, "%s", source) != EOF) // <-
+                {                                   // <-
+                    ii++;                           //  <-
+                }                                   //   <-
             }
             printf("\"%s\"\n",
-                   worrd[i].name); //Выводит слово, которое пользователь должен
-                                   //напечатать
+                   source); //Выводит слово, которое пользователь должен
+                            //напечатать
             printf("Write this word ");
             scanf("%s", word); //Слово, напечатанное пользователем
-            if (strcmp(worrd[i].name, word)
-                == 0) { //Проверка напечатанного пользователем слова(написано
-                        //верно или с ошибкой(ми)
+                               //Проверка напечатанного пользователем
+                               //слова(написано верно или с ошибкой(ми))
+            if (strcmp(source, word) == 0) {
                 printf("Слово верно\n");
                 correct++; // Счётчик правильно введённых слов
             } else {
