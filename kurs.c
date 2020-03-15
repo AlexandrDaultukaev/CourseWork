@@ -52,7 +52,7 @@ int main()
     if (begin(run) == 0) {
         time_1 = wtime();
         while (1) {                // Пока не конец файла
-            r = getrand(1, 60);    //<-
+            r = getrand(1, 4000);    //<-
             fseek(f, 0, SEEK_SET); //<-
             int ii = 0;            // <-
             while (ii != r)        // <-
