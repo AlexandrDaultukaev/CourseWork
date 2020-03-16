@@ -3,6 +3,7 @@
 #include <string.h>
 #include <sys/time.h>
 #include <time.h>
+#include <unistd.h>
 
 double wtime()
 { // Таймер
@@ -25,6 +26,14 @@ int begin(char run[4])
                "напишите \"end\"\n");
         scanf("%s", run);
     }
+    int tik = 0;
+    printf("Приготовьтесь...\n");
+    while (tik<3) {
+	printf("%d...\n",3-tik);
+	sleep(1);
+	tik++;
+    }
+    printf("RUN!\n");
     return 0;
 }
 
