@@ -5,6 +5,32 @@
 #include <time.h>
 #include <unistd.h>
 
+void max_len_amount_lines(int* amount, int* maxlen, FILE* f)
+{
+	char ch;
+	int counter_lines = 1;
+	int max = -1;
+	int i = 0;
+	while (1)
+	{
+		ch = fgetc(f);
+		if ((ch == '\n') || (ch == EOF))
+		{
+			if (max < i)
+				max = i;
+			i = 0;
+			if (ch == EOF)
+				break;
+			counter_lines++;
+		}
+		else
+		i++;
+	}
+	*amount = counter_lines;
+	*maxlen = max;
+	fseek(f, 0, SEEK_SET);
+}
+
 double wtime()
 { // Таймер
     struct timeval t;
@@ -48,20 +74,23 @@ void print(int correct, int uncorrect, double time)
 
 int main()
 {
+	FILE* f = fopen("input.txt", "r");
     char run[4]; // Переменная для проверки начала работы программы
     int i = 0;
-    char source[30];
-    char word[20];
-    char end[10] = "end"; // Для проверки конца программы
+	int amount = 0;
+	int maxlen = -1;
+	max_len_amount_lines(&amount, &maxlen, f);
+    char source[maxlen];
+    char word[maxlen];
     int uncorrect = 0, r;
     int correct = 0;
-    double time_1, time_2;
-    FILE* f = fopen("input.txt", "r");
+    double time_start, time_end = 0;
+	printf("amount = %d, maxlen = %d\n",amount,maxlen);
     // Если пользователь написал run, перейдёт к циклу while(ниже)
     if (begin(run) == 0) {
-        time_1 = wtime();
         while (1) {                // Пока не конец файла
-            r = getrand(0, 4000);    //<-
+			time_start = wtime();
+            r = getrand(0, amount);    //<-
             fseek(f, 0, SEEK_SET); //<-
             int ii = 0;            // <-
             while (ii != r)        // <-
@@ -82,16 +111,15 @@ int main()
                 printf("Слово верно\n");
                 correct++; // Счётчик правильно введённых слов
             } else {
-                if (strcmp(word, end) == 0) { // Если пользователь написал end
-                    time_2 = wtime();
-                    time_2 = time_2 - time_1;
-                    print(correct, uncorrect, time_2); // Выводим статистику
+                if (strcmp(word, "end") == 0) { // Если пользователь написал end
+                    print(correct, uncorrect, time_end); // Выводим статистику
                 } else { // Если это не end, то это просто неправильно введённое
                          // слово
                     printf("Слово неверно\n");
                     uncorrect++; // Счётчик неправильно введённых слов
                 }
             }
+			time_end = time_end + wtime() - time_start;
             i++; // Возможно рудимент.
         }
         // print(correct, uncorrect); // Возможно рудимент
