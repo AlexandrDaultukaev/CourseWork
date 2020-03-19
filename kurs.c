@@ -8,26 +8,22 @@
 void max_len_amount_lines(int* amount, int* maxlen, FILE* f)
 {
 	char ch;
-	int counter_lines = 1;
-	int max = -1;
 	int i = 0;
 	while (1)
 	{
 		ch = fgetc(f);
 		if ((ch == '\n') || (ch == EOF))
 		{
-			if (max < i)
-				max = i;
+			if (*maxlen < i)
+				*maxlen = i;
 			i = 0;
 			if (ch == EOF)
 				break;
-			counter_lines++;
+			++*amount;
 		}
 		else
 		i++;
 	}
-	*amount = counter_lines;
-	*maxlen = max;
 	fseek(f, 0, SEEK_SET);
 }
 
