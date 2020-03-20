@@ -1,3 +1,4 @@
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,24 +8,21 @@
 
 void max_len_amount_lines(int* amount, int* maxlen, FILE* f)
 {
-	char ch;
-	int i = 0;
-	while (1)
-	{
-		ch = fgetc(f);
-		if ((ch == '\n') || (ch == EOF))
-		{
-			if (*maxlen < i)
-				*maxlen = i;
-			i = 0;
-			if (ch == EOF)
-				break;
-			++*amount;
-		}
-		else
-		i++;
-	}
-	fseek(f, 0, SEEK_SET);
+    char ch;
+    int i = 0;
+    while (1) {
+        ch = fgetc(f);
+        if ((ch == '\n') || (ch == EOF)) {
+            if (*maxlen < i)
+                *maxlen = i;
+            i = 0;
+            if (ch == EOF)
+                break;
+            ++*amount;
+        } else
+            i++;
+    }
+    fseek(f, 0, SEEK_SET);
 }
 
 double wtime()
@@ -40,23 +38,33 @@ int getrand(int min, int max) // Рандом
     return (double)rand() / (RAND_MAX + 1.0) * (max - min) + min;
 }
 
-int begin(char run[4])
+void begin(char lang[])
 { //Функция проверки начала программы
-    while (strcmp(run, "run") != 0) {
-        printf("Keyboard Ninja. Напишите \"run\" для начала игры.\nЧтобы "
-               "закончить "
-               "напишите \"end\"\n");
-        scanf("%s", run);
+    if (strcmp(lang, "rus") == 0) {
+        printf("Клавиатурный ниндзя.\nНажмите 'ENTER' для начала "
+               "игры.\nЧтобы закончить напишите \"конец\".\n");
+    } else if (strcmp(lang, "eng") == 0) {
+        printf("Keyboard Ninja.\nPress 'ENTER' for start "
+               "game.\nWrite \"end\" to finish\n");
     }
+    getchar();
     int tik = 0;
-    printf("Приготовьтесь...\n");
-    while (tik<3) {
-	printf("%d...\n",3-tik);
-	sleep(1);
-	tik++;
+    if (strcmp(lang, "rus") == 0)
+        printf("Приготовьтесь...\n");
+    else if (strcmp(lang, "eng") == 0)
+        printf("Get ready...\n");
+    while (1) {
+        if (tik < 3) {
+            printf("%d...\n", 3 - tik);
+        } else {
+            printf("RUN!\n");
+            break;
+        }
+        sleep(1);
+        tik++;
     }
-    printf("RUN!\n");
-    return 0;
+    sleep(1);
+    system("clear");
 }
 
 void print(int correct, int uncorrect, double time)
@@ -70,55 +78,74 @@ void print(int correct, int uncorrect, double time)
 
 int main()
 {
-	FILE* f = fopen("input.txt", "r");
-    char run[4]; // Переменная для проверки начала работы программы
+    setlocale(LC_CTYPE, "Russian");
+    FILE* f = fopen("input.txt", "r");
+    system("clear");
     int i = 0;
-	int amount = 0;
-	int maxlen = -1;
-	max_len_amount_lines(&amount, &maxlen, f);
-    char source[maxlen];
-    char word[maxlen];
+    char lang[4];
+    int amount = 0;
+    int maxlen = -1;
+    max_len_amount_lines(&amount, &maxlen, f);
+    char source[maxlen * 2];
+    char word[maxlen * 2];
     int uncorrect = 0, r;
     int correct = 0;
     double time_start, time_end = 0;
-	printf("amount = %d, maxlen = %d\n",amount,maxlen);
+    printf("Отладка : amount = %d, maxlen = %d\n", amount, maxlen);
+    printf("Choose language\neng\nrus\n");
+    scanf("%s", lang);
+    system("clear");
+    getchar();
     // Если пользователь написал run, перейдёт к циклу while(ниже)
-    if (begin(run) == 0) {
-        while (1) {                // Пока не конец файла
-			time_start = wtime();
-            r = getrand(0, amount);    //<-
-            fseek(f, 0, SEEK_SET); //<-
-            int ii = 0;            // <-
-            while (ii != r)        // <-
-            { // <-   Функция выбора рандомного слова из списка
-                if (fscanf(f, "%s", source) != EOF) // <-
-                {                                   // <-
-                    ii++;                           //  <-
-                }                                   //   <-
-            }
-            printf("\"%s\"\n",
-                   source); //Выводит слово, которое пользователь должен
-                            //напечатать
-            printf("Write this word ");
-            scanf("%s", word); //Слово, напечатанное пользователем
-                               //Проверка напечатанного пользователем
-                               //слова(написано верно или с ошибкой(ми))
-            if (strcmp(source, word) == 0) {
-                printf("Слово верно\n");
-                correct++; // Счётчик правильно введённых слов
-            } else {
-                if (strcmp(word, "end") == 0) { // Если пользователь написал end
-                    print(correct, uncorrect, time_end); // Выводим статистику
-                } else { // Если это не end, то это просто неправильно введённое
-                         // слово
-                    printf("Слово неверно\n");
-                    uncorrect++; // Счётчик неправильно введённых слов
-                }
-            }
-			time_end = time_end + wtime() - time_start;
-            i++; // Возможно рудимент.
+    begin(lang);
+    while (1) { // Пока не конец файла
+        time_start = wtime();
+        r = getrand(0, amount); //<-
+        fseek(f, 0, SEEK_SET);  //<-
+        int ii = 0;             // <-
+        while (ii != r)         // <-
+        { // <-   Функция выбора рандомного слова из списка
+            if (fscanf(f, "%s", source) != EOF) // <-
+            {                                   // <-
+                ii++;                           //  <-
+            }                                   //   <-
         }
-        // print(correct, uncorrect); // Возможно рудимент
+        printf("\"%s\"\n",
+               source); //Выводит слово, которое пользователь должен
+                        //напечатать
+        if (strcmp(lang, "rus") == 0)
+            printf("Введите это слово: ");
+        else if (strcmp(lang, "eng") == 0)
+            printf("Write this word: ");
+        scanf("%s", word); //Слово, напечатанное пользователем
+                           //Проверка напечатанного пользователем
+                           //слова(написано верно или с ошибкой(ми))
+        if (strcmp(source, word) == 0) {
+            system("clear");
+            if (strcmp(lang, "rus") == 0)
+                printf("Слово верно\n");
+            else if (strcmp(lang, "eng") == 0)
+                printf("word is correct\n");
+            correct++; // Счётчик правильно введённых слов
+        } else {
+            if ((strcmp(word, "end") == 0)
+                || (strcmp(word, "конец")
+                    == 0)) { // Если пользователь написал end
+                system("clear");
+                print(correct, uncorrect, time_end); // Выводим статистику
+            } else { // Если это не end, то это просто неправильно введённое
+                     // слово
+                system("clear");
+                if (strcmp(lang, "rus") == 0)
+                    printf("Слово неверно\n");
+                else if (strcmp(lang, "eng") == 0)
+                    printf("word is uncorrect\n");
+                uncorrect++; // Счётчик неправильно введённых слов
+            }
+        }
+        time_end = time_end + wtime() - time_start;
+        i++; // Возможно рудимент.
     }
+    // print(correct, uncorrect); // Возможно рудимент
     return 0;
 }
