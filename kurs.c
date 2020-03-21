@@ -79,13 +79,20 @@ void print(int correct, int uncorrect, double time)
 int main()
 {
     setlocale(LC_CTYPE, "Russian");
-    FILE* f = fopen("input.txt", "r");
+    char lang_word[4];
+    char engl[] = "input.txt";
+    char rusk[] = "inputrus.txt";
+    printf("Choose language words eng/rus\n");
+    scanf("%s", lang_word);
+	FILE *fe = fopen(engl, "r");
+	FILE *fr = fopen(rusk, "r");
     system("clear");
     int i = 0;
     char lang[4];
-    int amount = 0;
-    int maxlen = -1;
-    max_len_amount_lines(&amount, &maxlen, f);
+    int amount = 0, amount_1 = 0;
+    int maxlen = -1, maxlen_1 = -1;
+    max_len_amount_lines(&amount, &maxlen, fr);
+    max_len_amount_lines(&amount_1, &maxlen_1, fe);
     char source[maxlen * 2];
     char word[maxlen * 2];
     int uncorrect = 0, r;
@@ -100,16 +107,31 @@ int main()
     begin(lang);
     while (1) { // Пока не конец файла
         time_start = wtime();
-        r = getrand(0, amount); //<-
-        fseek(f, 0, SEEK_SET);  //<-
+        //r = getrand(0, amount); //<-
+	if (strcmp(lang_word, "rus") == 0) {
+	    r = getrand(0, amount);
+    	    fseek(fr, 0, SEEK_SET);
+	    int ii = 0;
+	    while (ii != r) 
+	    {
+		if (fscanf(fr, "%s", source) != EOF)
+		{
+		    ii++;
+		}
+	    }
+	} else {
+	    r = getrand(0, amount_1);
+	    fseek(fe, 0, SEEK_SET);
+	
         int ii = 0;             // <-
         while (ii != r)         // <-
         { // <-   Функция выбора рандомного слова из списка
-            if (fscanf(f, "%s", source) != EOF) // <-
+            if (fscanf(fe, "%s", source) != EOF) // <-
             {                                   // <-
                 ii++;                           //  <-
             }                                   //   <-
         }
+	}
         printf("\"%s\"\n",
                source); //Выводит слово, которое пользователь должен
                         //напечатать
@@ -148,4 +170,6 @@ int main()
     }
     // print(correct, uncorrect); // Возможно рудимент
     return 0;
+    fclose(fe);
+    fclose(fr);
 }
