@@ -7,11 +7,11 @@
 #include <unistd.h>
 
 typedef struct setting_lang {
-	char* hello;
-	char* getready;
-	char* correct;
-	char* uncorrect;
-	char* write;
+    char* hello;
+    char* getready;
+    char* correct;
+    char* uncorrect;
+    char* write;
 } setting_lang;
 
 void max_len_amount_lines(int* amount, int* maxlen, FILE* f)
@@ -46,13 +46,13 @@ int getrand(int min, int max) // Рандом
     return (double)rand() / (RAND_MAX + 1.0) * (max - min) + min;
 }
 
-void begin(char lang[], setting_lang *l)
+void begin(char lang[], setting_lang* l)
 { //Функция проверки начала программы
-    printf("%s",l->hello);
-    
+    printf("%s", l->hello);
+
     getchar();
     int tik = 0;
-    printf("%s",l->getready);
+    printf("%s", l->getready);
     while (1) {
         if (tik < 3) {
             printf("%d...\n", 3 - tik);
@@ -76,56 +76,57 @@ void print(int correct, int uncorrect, double time)
     exit(0);
 }
 
-void language(char lang[], setting_lang *l)
+void language(char lang[], setting_lang* l)
 {
-	if (strcmp(lang, "rus") == 0)
-	{
-		l->hello = (char*)malloc(sizeof("Клавиатурный ниндзя.\nНажмите 'ENTER' для начала игры.\nЧтобы закончить напишите \"конец\".\n"));
-		l->hello = "Клавиатурный ниндзя.\nНажмите 'ENTER' для начала игры.\nЧтобы закончить напишите \"конец\".\n";
-		l->getready = (char*)malloc(sizeof("Приготовьтесь...\n"));
-		l->getready = "Приготовьтесь...\n";
-		l->correct = (char*)malloc(sizeof("Слово верно\n"));
-		l->correct = "Слово верно\n";
-		l->uncorrect = (char*)malloc(sizeof("Слово неверно\n"));
-		l->uncorrect = "Слово неверно\n";
-		l->write = (char*)malloc(sizeof("Введите это слово: "));
-		l->write = "Введите это слово: ";
-	}
-	else if (strcmp(lang, "eng") == 0)
-	{
-		l->hello = (char*)malloc(sizeof("Keyboard Ninja.\nPress 'ENTER' for start game.\nWrite \"end\" to finish\n"));
-		l->hello = "Keyboard Ninja.\nPress 'ENTER' for start game.\nWrite \"end\" to finish\n";
-		l->getready = (char*)malloc(sizeof("Get ready...\n"));
-		l->getready = "Get ready...\n";
-		l->correct = (char*)malloc(sizeof("word is correct\n"));
-		l->correct = "word is correct\n";
-		l->uncorrect = (char*)malloc(sizeof("word is uncorrect\n"));
-		l->uncorrect = "word is uncorrect\n";
-		l->write = (char*)malloc(sizeof("Write this word: "));
-		l->write = "Write this word: ";
-	}
+    if (strcmp(lang, "rus") == 0) {
+        l->hello = (char*)malloc(
+                sizeof("Клавиатурный ниндзя.\nНажмите 'ENTER' для начала "
+                       "игры.\nЧтобы закончить напишите \"конец\".\n"));
+        l->hello
+                = "Клавиатурный ниндзя.\nНажмите 'ENTER' для начала "
+                  "игры.\nЧтобы закончить напишите \"конец\".\n";
+        l->getready = (char*)malloc(sizeof("Приготовьтесь...\n"));
+        l->getready = "Приготовьтесь...\n";
+        l->correct = (char*)malloc(sizeof("Слово верно\n"));
+        l->correct = "Слово верно\n";
+        l->uncorrect = (char*)malloc(sizeof("Слово неверно\n"));
+        l->uncorrect = "Слово неверно\n";
+        l->write = (char*)malloc(sizeof("Введите это слово: "));
+        l->write = "Введите это слово: ";
+    } else if (strcmp(lang, "eng") == 0) {
+        l->hello = (char*)malloc(
+                sizeof("Keyboard Ninja.\nPress 'ENTER' for start game.\nWrite "
+                       "\"end\" to finish\n"));
+        l->hello
+                = "Keyboard Ninja.\nPress 'ENTER' for start game.\nWrite "
+                  "\"end\" to finish\n";
+        l->getready = (char*)malloc(sizeof("Get ready...\n"));
+        l->getready = "Get ready...\n";
+        l->correct = (char*)malloc(sizeof("word is correct\n"));
+        l->correct = "word is correct\n";
+        l->uncorrect = (char*)malloc(sizeof("word is uncorrect\n"));
+        l->uncorrect = "word is uncorrect\n";
+        l->write = (char*)malloc(sizeof("Write this word: "));
+        l->write = "Write this word: ";
+    }
 }
 
 void set_lang(char lang[], FILE** f)
 {
-
-	if (strcmp(lang, "rus") == 0)
-	{
-		*f = fopen("rus.txt","r");
-	}
-	else if (strcmp(lang, "eng") == 0)
-	{
-		*f = fopen("eng.txt", "r");
-	}
+    if (strcmp(lang, "rus") == 0) {
+        *f = fopen("rus.txt", "r");
+    } else if (strcmp(lang, "eng") == 0) {
+        *f = fopen("eng.txt", "r");
+    }
 }
 
-void check_word(int maxlen, int amount, FILE* f, setting_lang *l)
+void check_word(int maxlen, int amount, FILE* f, setting_lang* l)
 {
-	char *source = (char*)malloc(maxlen * 2 * sizeof(char));
-    char *word = (char*)malloc(maxlen * 2 * sizeof(char));
-	int uncorrect = 0, r;
+    char* source = (char*)malloc(maxlen * 2 * sizeof(char));
+    char* word = (char*)malloc(maxlen * 2 * sizeof(char));
+    int uncorrect = 0, r;
     int correct = 0;
-	double time_start, time_end = 0;
+    double time_start, time_end = 0;
     while (1) { // Пока не конец файла
         time_start = wtime();
         r = getrand(0, amount); //<-
@@ -141,13 +142,13 @@ void check_word(int maxlen, int amount, FILE* f, setting_lang *l)
         printf("\"%s\"\n",
                source); //Выводит слово, которое пользователь должен
                         //напечатать
-        printf("%s",l->write);
+        printf("%s", l->write);
         scanf("%s", word); //Слово, напечатанное пользователем
                            //Проверка напечатанного пользователем
                            //слова(написано верно или с ошибкой(ми))
         if (strcmp(source, word) == 0) {
             system("clear");
-            printf("%s",l->correct);
+            printf("%s", l->correct);
             correct++; // Счётчик правильно введённых слов
         } else {
             if ((strcmp(word, "end") == 0)
@@ -157,8 +158,8 @@ void check_word(int maxlen, int amount, FILE* f, setting_lang *l)
                 print(correct, uncorrect, time_end); // Выводим статистику
             } else { // Если это не end, то это просто неправильно введённое
                      // слово
-               system("clear");
-                printf("%s",l->uncorrect);
+                system("clear");
+                printf("%s", l->uncorrect);
                 uncorrect++; // Счётчик неправильно введённых слов
             }
         }
@@ -168,21 +169,21 @@ void check_word(int maxlen, int amount, FILE* f, setting_lang *l)
 
 int main()
 {
-	setting_lang *l = malloc(sizeof(setting_lang));
+    setting_lang* l = malloc(sizeof(setting_lang));
     setlocale(LC_CTYPE, "Russian");
     system("clear");
-	FILE *f = NULL;
+    FILE* f = NULL;
     char lang[4];
     int amount = 0;
     int maxlen = -1;
-	printf("Choose language\neng\nrus\n");
+    printf("Choose language\neng\nrus\n");
     scanf("%s", lang);
-	set_lang(lang,&f);
-	language(lang, l);
+    set_lang(lang, &f);
+    language(lang, l);
     max_len_amount_lines(&amount, &maxlen, f);
     system("clear");
     getchar();
     begin(lang, l);
-	check_word(maxlen, amount, f, l);
+    check_word(maxlen, amount, f, l);
     return 0;
 }
