@@ -6,7 +6,7 @@
 #include <time.h>
 #include <unistd.h>
 
-typedef struct setting_lang {
+typedef struct {
     char* hello;
     char* getready;
     char* correct;
@@ -167,6 +167,8 @@ void check_word(int maxlen, int amount, FILE* f, setting_lang* l)
         }
         time_end = time_end + wtime() - time_start;
     }
+    free(source);
+    free(word);
 }
 
 int main()
@@ -189,5 +191,11 @@ int main()
     getchar();
     begin(lang, l);
     check_word(maxlen, amount, f, l);
+    free(l->hello);
+    free(l->correct);
+    free(l->uncorrect);
+    free(l->write);
+    free(l->getready);
+    free(l);
     return 0;
 }
