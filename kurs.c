@@ -113,11 +113,13 @@ void language(char lang[], setting_lang* l)
 
 void set_lang(char lang[], FILE** f)
 {
-    if (strcmp(lang, "rus") == 0) {
-        *f = fopen("rus.txt", "r");
-    } else if (strcmp(lang, "eng") == 0) {
-        *f = fopen("eng.txt", "r");
-    }
+    	if (strcmp(lang, "rus") == 0) {
+        	*f = fopen("rus.txt", "r");
+    	} else if (strcmp(lang, "eng") == 0) {
+        	*f = fopen("eng.txt", "r");
+    	} else {
+    		printf("Don't understand what that means \"%s\"\n", lang);
+    	}
 }
 
 void check_word(int maxlen, int amount, FILE* f, setting_lang* l)
@@ -176,9 +178,11 @@ int main()
     char lang[4];
     int amount = 0;
     int maxlen = -1;
-    printf("Choose language\neng\nrus\n");
-    scanf("%s", lang);
-    set_lang(lang, &f);
+    while (f == NULL) {
+    	printf("Choose language\neng\nrus\n");
+    	scanf("%s", lang);
+    	set_lang(lang, &f);
+	}
     language(lang, l);
     max_len_amount_lines(&amount, &maxlen, f);
     system("clear");
