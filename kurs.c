@@ -17,6 +17,7 @@ int main()
     int amount = 0;
     int maxlen = -1;
     while (f == NULL) {
+	printf("SETTINGS\n");
     	printf("Choose language\neng\nrus\n");
     	scanf("%s", lang);
     	set_lang(lang, &f);
@@ -26,12 +27,13 @@ int main()
     system("clear");
     getchar();
     begin(lang, l);
-    check_word(maxlen, amount, f, l);
+    check_word(maxlen, amount, f, l, lang);
     free(l->hello);
     free(l->correct);
     free(l->uncorrect);
     free(l->write);
     free(l->getready);
+    free(l->settings);
     free(l);
     return 0;
 }

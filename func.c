@@ -60,23 +60,30 @@ void begin(char lang[], setting_lang* l)
     system("clear");
 }
 
-void print(int correct, int uncorrect, double time)
+void print(int correct, int uncorrect, double time, setting_lang *l, char lang[])
 { //Функция вывода статистики
 	char sett[10];
+	if (strcmp(lang, "rus") == 0) {
+	printf("Верных слов: %d\nНеверных слов: %d\nВремя: %f\n", correct, uncorrect, time);
+	} else if (strcmp(lang, "eng") == 0) {
     printf("Correct words: %d\nUncorrect words: %d\nTime: %f\n",
            correct,
            uncorrect,
            time);
+	}
     while (1) {
-    	printf("Write \"end\" again if you want to exit the program. Write \"settings\" if you want to go to settings\n");
+    	printf("%s",l->settings);
     	scanf("%s", sett);
-    	if (strcmp(sett, "settings") == 0) {
+    	if ((strcmp(sett, "settings") == 0)||(strcmp(sett, "настройки") == 0)) {
     		main();
     		break;
-   		} else if (strcmp(sett, "end") == 0) {
+   		} else if ((strcmp(sett, "close") == 0)||(strcmp(sett, "закрыть") == 0)) {
     		exit(0);
     	} else  {
-    		printf("Don't understand what that means \"%s\"\n", sett);
+		if (strcmp(lang, "eng") == 0) 
+	    		printf("Don't understand what that means \"%s\"\n", sett);
+		else 
+			printf("Не понимаю, что это значит \"%s\"\n", sett);
     	} 
     }
 
@@ -100,6 +107,8 @@ void language(char lang[], setting_lang* l)
         l->uncorrect = "Слово неверно\n";
         l->write = (char*)malloc(sizeof("Введите это слово: "));
         l->write = "Введите это слово: ";
+	l->settings = (char*)malloc(sizeof("Напишите \"закрыть\" если вы хотите выйти из игры.\nНапишите \"настройки\" если вы хотите перейти в настроки\n"));
+	l->settings = "Напишите \"закрыть\" если вы хотите выйти из игры.\nНапишите \"настройки\" если вы хотите перейти в настройки\n";
     } else if (strcmp(lang, "eng") == 0) {
         l->hello = (char*)malloc(
                 sizeof("Keyboard Ninja.\nPress 'ENTER' for start game.\nWrite "
@@ -115,6 +124,8 @@ void language(char lang[], setting_lang* l)
         l->uncorrect = "word is uncorrect\n";
         l->write = (char*)malloc(sizeof("Write this word: "));
         l->write = "Write this word: ";
+	l->settings = (char*)malloc(sizeof("Write \"close\" if you want to exit the program. Write \"settings\" if you want to go to settings\n"));
+	l->settings = "Write \"close\" if you want to exit the program. Write \"settings\" if you want to go to settings\n";
     }
 }
 
@@ -129,7 +140,7 @@ void set_lang(char lang[], FILE** f)
     	}
 }
 
-void check_word(int maxlen, int amount, FILE* f, setting_lang* l)
+void check_word(int maxlen, int amount, FILE* f, setting_lang* l, char lang[])
 {
     char* source = (char*)malloc(maxlen * 2 * sizeof(char));
     char* word = (char*)malloc(maxlen * 2 * sizeof(char));
@@ -164,7 +175,7 @@ void check_word(int maxlen, int amount, FILE* f, setting_lang* l)
                 || (strcmp(word, "конец")
                     == 0)) { // Если пользователь написал end
                 system("clear");
-                print(correct, uncorrect, time_end); // Выводим статистику
+                print(correct, uncorrect, time_end, l, lang); // Выводим статистику
             } else { // Если это не end, то это просто неправильно введённое
                      // слово
                 system("clear");

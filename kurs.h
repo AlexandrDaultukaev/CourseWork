@@ -14,6 +14,7 @@ typedef struct {
     char* correct;
     char* uncorrect;
     char* write;
+    char* settings;
 } setting_lang;
 
 int main();
@@ -21,9 +22,9 @@ void max_len_amount_lines(int* amount, int* maxlen, FILE* f);
 double wtime();
 int getrand(int min, int max);
 void begin(char lang[], setting_lang* l);
-void print(int correct, int uncorrect, double time);
+void print(int correct, int uncorrect, double time, setting_lang* l, char lang[]);
 void language(char lang[], setting_lang* l);
 void set_lang(char lang[], FILE** f);
-void check_word(int maxlen, int amount, FILE* f, setting_lang* l);
+void check_word(int maxlen, int amount, FILE* f, setting_lang* l, char lang[]);
 
 #endif
