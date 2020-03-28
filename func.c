@@ -7,6 +7,39 @@
 #include <unistd.h>
 #include "kurs.h"
 
+
+
+//void playlist(char lang[], Playlist p) {
+//    if (strcmp(lang, "rus")==0) {
+//        printf("Выберите плейлист:\n\n, );
+//        
+//    }
+//}
+
+/*void other_playlist(FILE** f) {
+    char words[80];
+    //char buf[80];
+    *f = fopen("other.txt", "w");
+    //printf("Write words for your playlist\n");
+    fscanf(**f, "%s", words);
+    int i = fscanf(**f, "%s", words);
+    printf("i: %d\n", i);
+    sleep(5);
+    //while ((fscanf(*f, "%79[^\n]", words)) == 1) {
+        if (strcmp(words, "del") == 0) {
+            while(!feof(f))
+            {
+                fscanf(f, "%79s", buf);
+                if(!strcmp(buf, words))
+                    continue;
+                fprintf(f, "%s", buf);
+            }
+        }
+        //printf("The word entered: %s\nIf you want to delete it write \"del\"\n", words);
+
+    //}
+}*/
+
 void max_len_amount_lines(int* amount, int* maxlen, FILE* f)
 {
     char ch;
@@ -109,7 +142,7 @@ void language(char lang[], setting_lang* l)
         l->write = "Введите это слово: ";
 	l->settings = (char*)malloc(sizeof("Напишите \"закрыть\" если вы хотите выйти из игры.\nНапишите \"настройки\" если вы хотите перейти в настроки\n"));
 	l->settings = "Напишите \"закрыть\" если вы хотите выйти из игры.\nНапишите \"настройки\" если вы хотите перейти в настройки\n";
-    } else if (strcmp(lang, "eng") == 0) {
+    } else if ((strcmp(lang, "eng") == 0) || (strcmp(lang, "other") == 0)) {
         l->hello = (char*)malloc(
                 sizeof("Keyboard Ninja.\nPress 'ENTER' for start game.\nWrite "
                        "\"end\" to finish\n"));
@@ -129,15 +162,21 @@ void language(char lang[], setting_lang* l)
     }
 }
 
-void set_lang(char lang[], FILE** f)
+int set_lang(char lang[], FILE** f)
 {
     	if (strcmp(lang, "rus") == 0) {
         	*f = fopen("rus.txt", "r");
     	} else if (strcmp(lang, "eng") == 0) {
         	*f = fopen("eng.txt", "r");
-    	} else {
+    	} else if (strcmp(lang, "other") == 0) {
+            strcpy(lang, "eng");
+            return 2;
+            //*f = fopen("other.txt", "a");
+            //other_playlist(&f);
+        } else {
     		printf("Don't understand what that means \"%s\"\n", lang);
     	}
+        return 0;
 }
 
 void check_word(int maxlen, int amount, FILE* f, setting_lang* l, char lang[])
