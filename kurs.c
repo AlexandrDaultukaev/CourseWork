@@ -18,33 +18,14 @@ int main()
     system("clear");
     FILE* f = NULL;
     char lang[4];
-    char words[30];
     int amount = 0;
     int maxlen = -1;
-    int g;
     while (f == NULL) {
 		printf("SETTINGS\n");
     	printf("Choose language\neng\nrus\nother\n");
     	scanf("%s", lang);
-    	g = set_lang(lang, &f);
-    	if (g == 2) {
-    		//other_playlist(&f);
-    		f = fopen("other.txt", "a");
-    		while (1) {
-    			printf("Write word: ");
-    			scanf("%s", words);
-    			fputs(words, f);
-    			fputs("\n", f);
-
-    			if (strcmp("end", words) == 0) {
-    				fclose(f);
-    				f = fopen("other.txt", "r");
-    				break;
-    			}
-    		}
-    	}
-	}
-
+    	set_lang(lang, &f);
+    }
     language(lang, l);
     max_len_amount_lines(&amount, &maxlen, f);
     system("clear");

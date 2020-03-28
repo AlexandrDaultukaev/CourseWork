@@ -16,17 +16,25 @@
 //    }
 //}
 
-/*void other_playlist(FILE** f) {
+void other_playlist(FILE*** f) {
     char words[80];
     //char buf[80];
-    *f = fopen("other.txt", "w");
-    //printf("Write words for your playlist\n");
-    fscanf(**f, "%s", words);
-    int i = fscanf(**f, "%s", words);
-    printf("i: %d\n", i);
-    sleep(5);
+    **f = fopen("other.txt", "a");
+    while (1) {
+                printf("Write word: ");
+                scanf("%s", words);
+                fputs(words, **f);
+                fputs("\n", **f);
+
+                if (strcmp("end", words) == 0) {
+                    fclose(**f);
+                    **f = fopen("other.txt", "r");
+                    break;
+                }
+            }
+    
     //while ((fscanf(*f, "%79[^\n]", words)) == 1) {
-        if (strcmp(words, "del") == 0) {
+        /*if (strcmp(words, "del") == 0) {
             while(!feof(f))
             {
                 fscanf(f, "%79s", buf);
@@ -34,11 +42,11 @@
                     continue;
                 fprintf(f, "%s", buf);
             }
-        }
+        }*/
         //printf("The word entered: %s\nIf you want to delete it write \"del\"\n", words);
 
     //}
-}*/
+}
 
 void max_len_amount_lines(int* amount, int* maxlen, FILE* f)
 {
@@ -170,9 +178,9 @@ int set_lang(char lang[], FILE** f)
         	*f = fopen("eng.txt", "r");
     	} else if (strcmp(lang, "other") == 0) {
             strcpy(lang, "eng");
-            return 2;
+            //return 2;
             //*f = fopen("other.txt", "a");
-            //other_playlist(&f);
+            other_playlist(&f);
         } else {
     		printf("Don't understand what that means \"%s\"\n", lang);
     	}

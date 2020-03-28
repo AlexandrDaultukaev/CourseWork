@@ -22,7 +22,7 @@ typedef struct {
 } Playlist;
 
 int main();
-//void other_playlist(FILE** f);
+void other_playlist(FILE*** f);
 void max_len_amount_lines(int* amount, int* maxlen, FILE* f);
 double wtime();
 int getrand(int min, int max);
