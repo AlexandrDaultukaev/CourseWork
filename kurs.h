@@ -17,10 +17,6 @@ typedef struct {
     char* settings;
 } setting_lang;
 
-typedef struct {
-	char pl[40];
-} Playlist;
-
 int main();
 void other_playlist(FILE*** f);
 void max_len_amount_lines(int* amount, int* maxlen, FILE* f);

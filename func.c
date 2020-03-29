@@ -7,53 +7,38 @@
 #include <time.h>
 #include <unistd.h>
 
-// void playlist(char lang[], Playlist p) {
-//    if (strcmp(lang, "rus")==0) {
-//        printf("Выберите плейлист:\n\n, );
-//
-//    }
-//}
 
 void other_playlist(FILE*** f)
 {
+    char name_playlist[30];
+    char txt[8] = ".txt";
+    printf("Write the name of your playlist.\nIf the playlist already exists, write its name\n");
+    scanf("%s", name_playlist);
+    if (name_playlist == NULL) 
+        strcpy(name_playlist, "other");
+    strcat(name_playlist, txt);
     char words[512];
-    // char buf[512];
     char y_n[2];
-    char b_words[512];
     printf("Enter the words for your playlist.\nWhen done, write the "
            "\"end\".\nIf you want to clear the entire playlist, write "
            "\"delall\"\n");
-    **f = fopen("other.txt", "a");
+    **f = fopen(name_playlist, "a");
     while (1) {
         printf("Write word: ");
         scanf("%s", words);
-        if ((strcmp("end", words) != 0) || (strcmp("delall", words) != 0)
-            || (strcmp("del", words) != 0)) {
-            strcpy(b_words, words);
-        }
-        if (strcmp("end", words) == 0) {
+            if (strcmp("end", words) == 0) {
             fclose(**f);
-            **f = fopen("other.txt", "r");
+            **f = fopen(name_playlist, "r");
             break;
         }
         if (strcmp("delall", words) == 0) {
             fclose(**f);
-            **f = fopen("other.txt", "w");
+            **f = fopen(name_playlist, "w");
             fclose(**f);
-            **f = fopen("other.txt", "a");
+            **f = fopen(name_playlist, "a");
             continue;
         }
-        /*  if (strcmp(words, "del") == 0) {
-              fseek(**f, 0, SEEK_SET);
-      while(!feof(**f))
-      {
-          fscanf(**f, "%511s", buf);
-
-          if(!strcmp(buf, words))
-              continue;
-          fprintf(**f, "%s", buf);
-      }
-  }*/ while (1) {
+        while (1) {
             printf("If you want to add this word Y, write, if not, then N: "
                    "%s\n",
                    words);
@@ -69,21 +54,6 @@ void other_playlist(FILE*** f)
             }
         }
     }
-
-    /*while ((fscanf(*f, "%79[^\n]", words)) == 1) {
-        if (strcmp(words, "del") == 0) {
-            while(!feof(f))
-            {
-                fscanf(f, "%79s", buf);
-                if(!strcmp(buf, words))
-                    continue;
-                fprintf(f, "%s", buf);
-            }
-        }
-        printf("The word entered: %s\nIf you want to delete it write \"del\"\n",
-    words);
-
-    }*/
 }
 
 void max_len_amount_lines(int* amount, int* maxlen, FILE* f)
@@ -230,7 +200,7 @@ int set_lang(char lang[], FILE** f)
         *f = fopen("rus.txt", "r");
     } else if (strcmp(lang, "eng") == 0) {
         *f = fopen("eng.txt", "r");
-    } else if (strcmp(lang, "other") == 0) {
+    } else if (strcmp(lang, "new") == 0) {
         strcpy(lang, "eng");
         // return 2;
         //*f = fopen("other.txt", "a");

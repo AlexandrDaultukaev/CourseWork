@@ -7,9 +7,9 @@
 #include <time.h>
 #include <unistd.h>
 
-// typedef struct {
-//		char pl[40];
-//} Playlist;
+/*typedef struct {
+		char name_playlist[40];
+} Playlist;*/
 
 int main()
 {
@@ -22,7 +22,7 @@ int main()
     int maxlen = -1;
     while (f == NULL) {
         printf("SETTINGS\n");
-        printf("Choose language\neng\nrus\nother\n");
+        printf("Choose language\neng\nrus\nnew\n");
         scanf("%s", lang);
         set_lang(lang, &f);
     }
