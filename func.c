@@ -19,18 +19,25 @@
 void other_playlist(FILE*** f) {
     char words[80];
     //char buf[80];
+    printf("Enter the words for your playlist.\nWhen done, write the \"end\".\nIf you want to clear the entire playlist, write \"delall\"\n");
     **f = fopen("other.txt", "a");
     while (1) {
                 printf("Write word: ");
                 scanf("%s", words);
-                fputs(words, **f);
-                fputs("\n", **f);
-
                 if (strcmp("end", words) == 0) {
                     fclose(**f);
                     **f = fopen("other.txt", "r");
                     break;
                 }
+                if (strcmp("delall", words) == 0) {
+                    fclose(**f);
+                    **f = fopen("other.txt", "w");
+                    fclose(**f);
+                    **f = fopen("other.txt", "a");
+                    continue;
+                }
+                fputs(words, **f);
+                fputs("\n", **f);
             }
     
     //while ((fscanf(*f, "%79[^\n]", words)) == 1) {
