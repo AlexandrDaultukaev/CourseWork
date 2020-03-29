@@ -1,3 +1,4 @@
+#include "kurs.h"
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,9 +6,8 @@
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
-#include "kurs.h"
 
-//typedef struct {
+// typedef struct {
 //		char pl[40];
 //} Playlist;
 
@@ -21,10 +21,10 @@ int main()
     int amount = 0;
     int maxlen = -1;
     while (f == NULL) {
-		printf("SETTINGS\n");
-    	printf("Choose language\neng\nrus\nother\n");
-    	scanf("%s", lang);
-    	set_lang(lang, &f);
+        printf("SETTINGS\n");
+        printf("Choose language\neng\nrus\nother\n");
+        scanf("%s", lang);
+        set_lang(lang, &f);
     }
     language(lang, l);
     max_len_amount_lines(&amount, &maxlen, f);
