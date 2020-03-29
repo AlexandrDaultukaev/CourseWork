@@ -39,5 +39,6 @@ int main()
     free(l->getready);
     free(l->settings);
     free(l);
+    fclose(f);
     return 0;
 }

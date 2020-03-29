@@ -14,8 +14,8 @@ void other_playlist(FILE*** f)
     char txt[8] = ".txt";
     printf("Write the name of your playlist.\nIf the playlist already exists, write its name\n");
     scanf("%s", name_playlist);
-    if (name_playlist == NULL) 
-        strcpy(name_playlist, "other");
+    //if (name_playlist == NULL) 
+    //    strcpy(name_playlist, "other");
     strcat(name_playlist, txt);
     char words[512];
     char y_n[2];
@@ -43,11 +43,11 @@ void other_playlist(FILE*** f)
                    "%s\n",
                    words);
             scanf("%s", y_n);
-            if (strcmp(y_n, "Y") == 0) {
+            if ((strcmp(y_n, "Y") == 0) || (strcmp(y_n, "y") == 0)) {
                 fputs(words, **f);
                 fputs("\n", **f);
                 break;
-            } else if (strcmp(y_n, "N") == 0) {
+            } else if ((strcmp(y_n, "N") == 0) || (strcmp(y_n, "n") == 0)) {
                 break;
             } else {
                 printf("Don't understand what that means \"%s\"\n", y_n);
